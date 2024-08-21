@@ -1,3 +1,6 @@
 env/
 themepark_queues/themepark_queues/__pycache__/
+themepark_queues/rides/__pycache__/
 api_test.py
+*.pyc
+*.sqlite3
