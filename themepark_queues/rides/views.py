@@ -48,8 +48,8 @@ def home(request):
     ride_type = 'Thrill'
 
   # Retrieves lists of rides from ride table in DB (split into family and thrill lists)
-  rides_family = Ride.objects.filter(type = 'Family')
-  rides_thrill = Ride.objects.filter(type = 'Thrill')
+  rides_family = Ride.objects.filter(type = 'Family').order_by('name')
+  rides_thrill = Ride.objects.filter(type = 'Thrill').order_by('name')
 
   context = {
     'title': 'Homepage',

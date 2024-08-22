@@ -1,14 +1,25 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  </head>
+
   <body>
 
     <div class="container">
 
       <h1>Themepark Queues App</h1>
       
-      <div class="container">
+      <div class="col-sm-6">
         <br/>
-        <h2>Thrill</h2>
+        <center>
+          <h2>Thrill</h2>
+        </center>
 
         <table class="table table-bordered table-striped">
           <thead>
@@ -21,16 +32,22 @@
             {% for ride in rides_thrill %}
             <tr>
               <td>{{ ride.name }}</td>
-              <td>{{ ride.wait_time }}</td>
+              {% if ride.open_state == True %}
+                <td>{{ ride.wait_time }}</td>
+              {% else %}
+                <td>Closed</td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
 
-      <div class="container">
+      <div class="col-sm-6">
         <br/>
-        <h2>Family</h2>
+        <center>
+          <h2>Family</h2>
+        </center>
 
         <table class="table table-bordered table-striped">
           <thead>
@@ -43,7 +60,11 @@
             {% for ride in rides_family %}
             <tr>
               <td>{{ ride.name }}</td>
-              <td>{{ ride.wait_time }}</td>
+              {% if ride.open_state == True %}
+                <td>{{ ride.wait_time }}</td>
+              {% else %}
+                <td>Closed</td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>
