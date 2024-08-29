@@ -18,21 +18,13 @@ def home(request):
   # Gets value of lands key into a list
   rides_req_lands = rides_req_dict['lands']
 
+  ## TODO Adjust so it can be used dynamically for other parks
   # Sets ride type to family as the first list of rides are all of that type
   ride_type = 'Family'
   for i in range(2):
 
-    # Converts list of rides into a list of dicts of each ride separated by 
-    # ride type
-    ride_category = (rides_req_lands[i])['rides']
-
-    # Number of rides in category
-    num_rides_of_type = len(ride_category)
-
-    for j in range(num_rides_of_type):
-
-      # Gets dict of a single ride in list
-      cur_ride = ride_category[j]
+    ## TODO Improve this loop to use object in list
+    for cur_ride in (rides_req_lands[i])['rides']:
 
       ride = Ride(
         id = cur_ride['id'],
