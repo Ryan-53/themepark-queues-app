@@ -1,0 +1,13 @@
+{% include 'index.html' %}
+
+<body>
+  </br>
+  <div class="container">
+    <h4>User Registration</h4>
+    <form action="/register" method="post">
+      {% csrf_token %}
+      {% load crispy_forms_tags %}
+      {% crispy form %}
+    </form>
+  </div>
+</body>

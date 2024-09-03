@@ -1,0 +1,65 @@
+{% include "index.html" %}
+
+  <body>
+    <div class="container">
+          
+      <div class="row">
+        <div class="col-sm-6">
+          <br/>
+          <center>
+            <h2>Thrills</h2>
+          </center>
+
+          <table class="table table-borderless table-striped table-info table-hover table-active">
+            <thead class="bg-info">
+              <tr>
+                <th>Name</th>
+                <th>Wait Time</th>
+              </tr>
+            </thead>
+            <tbody> 
+              {% for ride in rides_thrill %}
+              <tr>
+                <td>{{ ride.name }}</td>
+                {% if ride.open_state == True %}
+                  <td>{{ ride.wait_time }}</td>
+                {% else %}
+                  <td>Closed</td>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-sm-6">
+          <br/>
+          <center>
+            <h2>Family</h2>
+          </center>
+
+          <table class="table table-borderless table-striped table-info table-hover table-active">
+            <thead class="bg-info">
+              <tr>
+                <th>Name</th>
+                <th>Wait Time</th>
+              </tr>
+            </thead>
+            <tbody> 
+              {% for ride in rides_family %}
+              <tr>
+                <td>{{ ride.name }}</td>
+                {% if ride.open_state == True %}
+                  <td>{{ ride.wait_time }}</td>
+                {% else %}
+                  <td>Closed</td>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </body>

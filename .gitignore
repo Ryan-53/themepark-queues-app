@@ -1,6 +1,16 @@
+# Virtual environments
 env/
+
+# Local cache
 themepark_queues/themepark_queues/__pycache__/
 themepark_queues/rides/__pycache__/
-api_test.py
 *.pyc
+
+# Local DB
 *.sqlite3
+
+# Local debugging files
+api_test.py
+
+# Local Settings
+settings.json

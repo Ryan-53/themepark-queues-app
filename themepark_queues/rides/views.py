@@ -1,52 +1,75 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
-import requests
-from .models import Ride
+from django.db.models import QuerySet
+from .models import User
+from .api_request import get_queue_data
+from .forms import RegisterUserForm, LoginUserForm
 
-def home(request):
+def home(request) -> HttpResponse:
 
-  template = loader.get_template('index.html')
+  template = loader.get_template('home.html')
 
-  api_url = "https://queue-times.com/parks/1/queue_times.json"
+  ## DYNAMIC_TODO: Make this change when a different park is requested
+  park_id: int = 1
 
-  response = requests.get(api_url)
-
-  # Converts json response into a dictionary of all rides
-  rides_req_dict = response.json()
-
-  # Gets value of lands key into a list
-  rides_req_lands = rides_req_dict['lands']
-
-  ## TODO Adjust so it can be used dynamically for other parks
-  # Sets ride type to family as the first list of rides are all of that type
-  ride_type = 'Family'
-  for i in range(2):
-
-    ## TODO Improve this loop to use object in list
-    for cur_ride in (rides_req_lands[i])['rides']:
-
-      ride = Ride(
-        id = cur_ride['id'],
-        name = cur_ride['name'],
-        type = ride_type,
-        open_state = cur_ride['is_open'],
-        wait_time = cur_ride['wait_time'],
-        last_updated = cur_ride['last_updated']
-      )
-
-      ride.save()
-
-    ride_type = 'Thrill'
-
-  # Retrieves lists of rides from ride table in DB (split into family and thrill lists)
-  rides_family = Ride.objects.filter(type = 'Family').order_by('name')
-  rides_thrill = Ride.objects.filter(type = 'Thrill').order_by('name')
+  rides: tuple[QuerySet, QuerySet] = get_queue_data(park_id=park_id)
 
   context = {
     'title': 'Homepage',
-    'rides_family': rides_family,
-    'rides_thrill': rides_thrill
+    'rides_family': rides[0],
+    'rides_thrill': rides[1]
   }
 
-  return render(request, 'index.html', context)
+  return render(request, 'home.html', context)
+
+
+def register(request) -> HttpResponse:
+
+  # If the form has been submitted
+  if request.method == "POST":
+
+    form = RegisterUserForm(request.POST)
+    if form.is_valid():
+
+      user = User(
+        email = form.cleaned_data['email'],
+        password = form.cleaned_data['password']
+      )
+
+      user.save()
+
+      return redirect('/')
+    
+    ## TODO: Handle invalid sign up details
+
+  form = RegisterUserForm()
+
+  context = {
+    'title': 'User registration',
+    'form': form
+  }
+
+  return render(request, 'register.html', context)
+
+
+def login(request) -> HttpResponse:
+
+  # If the form has been submitted
+  if request.method == "POST":
+
+    form = LoginUserForm(request.POST)
+    if form.is_valid():
+
+      ### TODO: Log in validation (email and password)
+
+      return redirect('/')
+
+  form = LoginUserForm()
+
+  context = {
+    'title': 'User registration',
+    'form': form
+  }
+
+  return render(request, 'login.html', context)
