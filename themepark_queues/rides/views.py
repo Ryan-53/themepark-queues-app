@@ -62,6 +62,7 @@ def login(request) -> HttpResponse:
     form = LoginUserForm(request, data=request.POST)
     if form.is_valid():
 
+      # Email used as username
       username = request.POST.get('username')
       password = request.POST.get('password')
 

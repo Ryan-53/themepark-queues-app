@@ -9,7 +9,7 @@ class CreateUserForm(UserCreationForm):
 
   class Meta:
     model = User
-    fields = ['username', 'email', 'password1', 'password2']
+    fields = ['email', 'password1', 'password2']
   
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -21,7 +21,6 @@ class CreateUserForm(UserCreationForm):
     self.helper.layout = Layout(
       Fieldset(
         '',
-        Field('username'),
         Field('email'),
         Field('password1'),
         Field('password2')
@@ -29,10 +28,22 @@ class CreateUserForm(UserCreationForm):
       Submit('submit', 'Sign up', css_class='button white'),
     )
 
-    self.fields['username'].label = "Username"
     self.fields['email'].label = "Email"
     self.fields['password1'].label = "Password"
     self.fields['password2'].label = "Re-enter password"
+
+  def save(self, commit=True):
+    """ Overides parent save method to add in username as the email """
+
+    # Call parent save method but don't commit to DB yet
+    user = super().save(commit=False)
+
+    user.username = self.cleaned_data.get('email')
+
+    if commit:
+      user.save()
+    
+    return user
 
 class LoginUserForm(AuthenticationForm):
   """ Authenticate/Login a user form """
@@ -57,5 +68,5 @@ class LoginUserForm(AuthenticationForm):
       Submit('submit', 'Log in', css_class='button white'),
     )
 
-    self.fields['username'].label = "Username"
+    self.fields['username'].label = "Email"
     self.fields['password'].label = "Password"

@@ -32,12 +32,14 @@
                   {% endif %}
                   {% if user.is_authenticated %}
                     <td>
+                      <!-- Make this a link to the ride page where user can enable email notifications -->
                       <button class="subscribe-button" data-toggle="collapse" data-target="#subscribe">
                         <!-- TODO: Crop arrow image -->
                         <img class="subscribe-expand" src="static/images/arrow_expand.png"/>
                       </button>
 
-                      <!-- TODO: Auto-submit form with toggle slider button to enable email notifications -->
+                      <!-- TODO: Auto-submit form with toggle slider button to enable email notifications.
+                      Also make it different for every row -->
                       <div id="subscribe" class="collapse">
                         Subscribe
                       </div>
