@@ -1,15 +1,15 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, Field
 
-class RegisterUserForm(forms.Form):
-  email = forms.EmailField(label='email',
-                           widget=forms.EmailInput,
-                           max_length=100)
-  
-  password = forms.CharField(label='password',
-                             widget=forms.PasswordInput,
-                             max_length=100)
+class CreateUserForm(UserCreationForm):
+  """ Create a user form """
+
+  class Meta:
+    model = User
+    fields = ['username', 'email', 'password1', 'password2']
   
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -21,23 +21,25 @@ class RegisterUserForm(forms.Form):
     self.helper.layout = Layout(
       Fieldset(
         '',
+        Field('username'),
         Field('email'),
-        Field('password')
+        Field('password1'),
+        Field('password2')
       ),
       Submit('submit', 'Sign up', css_class='button white'),
     )
 
+    self.fields['username'].label = "Username"
     self.fields['email'].label = "Email"
-    self.fields['password'].label = "Password"
+    self.fields['password1'].label = "Password"
+    self.fields['password2'].label = "Re-enter password"
 
-class LoginUserForm(forms.Form):
-  email = forms.EmailField(label='email',
-                           widget=forms.EmailInput,
-                           max_length=100)
-  
-  password = forms.CharField(label='password',
-                             widget=forms.PasswordInput,
-                             max_length=100)
+class LoginUserForm(AuthenticationForm):
+  """ Authenticate/Login a user form """
+
+  # TODO: Change username to email
+  username = forms.CharField(widget=forms.TextInput())
+  password = forms.CharField(widget=forms.PasswordInput())
   
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -49,11 +51,11 @@ class LoginUserForm(forms.Form):
     self.helper.layout = Layout(
       Fieldset(
         '',
-        Field('email'),
+        Field('username'),
         Field('password')
       ),
       Submit('submit', 'Log in', css_class='button white'),
     )
 
-    self.fields['email'].label = "Email"
+    self.fields['username'].label = "Username"
     self.fields['password'].label = "Password"

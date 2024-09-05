@@ -45,6 +45,7 @@ def get_queue_data(park_id: int) -> tuple[QuerySet, QuerySet]:
 
       ride.save()
   
+  ## DYNAMIC_TODO: Change so it filters by any type not just for AT
   return (Ride.objects.filter(type = 'Family').order_by('name'),
     Ride.objects.filter(type = 'Thrills').order_by('name'))
   

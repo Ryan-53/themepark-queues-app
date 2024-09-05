@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import QuerySet
-from .models import User
 from .api_request import get_queue_data
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import CreateUserForm, LoginUserForm
+from django.contrib import auth
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 
 def home(request) -> HttpResponse:
 
@@ -15,10 +17,14 @@ def home(request) -> HttpResponse:
 
   rides: tuple[QuerySet, QuerySet] = get_queue_data(park_id=park_id)
 
-  context = {
+  land_names: list[str] = ['Family', 'Thrills']
+
+  context: dict = {
     'title': 'Homepage',
     'rides_family': rides[0],
-    'rides_thrill': rides[1]
+    'rides_thrill': rides[1],
+    'rides_list': rides,
+    'land_names': land_names
   }
 
   return render(request, 'home.html', context)
@@ -26,26 +32,19 @@ def home(request) -> HttpResponse:
 
 def register(request) -> HttpResponse:
 
-  # If the form has been submitted
-  if request.method == "POST":
+  form = CreateUserForm()
 
-    form = RegisterUserForm(request.POST)
+  # If the form has been submitted
+  if request.method == 'POST':
+
+    form = CreateUserForm(request.POST)
     if form.is_valid():
 
-      user = User(
-        email = form.cleaned_data['email'],
-        password = form.cleaned_data['password']
-      )
+      form.save()
 
-      user.save()
+      return redirect("/")
 
-      return redirect('/')
-    
-    ## TODO: Handle invalid sign up details
-
-  form = RegisterUserForm()
-
-  context = {
+  context: dict = {
     'title': 'User registration',
     'form': form
   }
@@ -55,17 +54,22 @@ def register(request) -> HttpResponse:
 
 def login(request) -> HttpResponse:
 
+  form = LoginUserForm()
+
   # If the form has been submitted
   if request.method == "POST":
 
-    form = LoginUserForm(request.POST)
+    form = LoginUserForm(request, data=request.POST)
     if form.is_valid():
 
-      ### TODO: Log in validation (email and password)
+      username = request.POST.get('username')
+      password = request.POST.get('password')
 
-      return redirect('/')
+      user = authenticate(request, username=username, password=password)
 
-  form = LoginUserForm()
+      if user is not None:
+        auth.login(request, user)
+        return redirect("/")
 
   context = {
     'title': 'User registration',
@@ -73,3 +77,17 @@ def login(request) -> HttpResponse:
   }
 
   return render(request, 'login.html', context)
+
+
+@login_required(login_url="login")
+def account(request) -> HttpResponse:
+
+
+  return render(request, 'account.html')
+
+
+def logout(request) -> HttpResponse:
+
+  auth.logout(request)
+
+  return redirect("/")

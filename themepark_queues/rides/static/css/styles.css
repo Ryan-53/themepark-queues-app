@@ -2,6 +2,19 @@
   display: none;
 }
 
+.subscribe-expand {
+  display: flex;
+  height: 20px;
+  width: 20px;
+}
+
+.subscribe-button {
+  border: none;
+  cursor: pointer;
+  appearance: none;
+  background-color: inherit;
+}
+
 /*
 .button {
   padding: 10px 20px;

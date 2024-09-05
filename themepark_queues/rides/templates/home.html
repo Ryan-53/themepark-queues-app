@@ -1,36 +1,54 @@
-{% include "index.html" %}
+{% include "base.html" %}
 
   <body>
     <div class="container">
           
       <div class="row">
-        <div class="col-sm-6">
-          <br/>
-          <center>
-            <h2>Thrills</h2>
-          </center>
 
-          <table class="table table-borderless table-striped table-info table-hover table-active">
-            <thead class="bg-info">
-              <tr>
-                <th>Name</th>
-                <th>Wait Time</th>
-              </tr>
-            </thead>
-            <tbody> 
-              {% for ride in rides_thrill %}
-              <tr>
-                <td>{{ ride.name }}</td>
-                {% if ride.open_state == True %}
-                  <td>{{ ride.wait_time }}</td>
-                {% else %}
-                  <td>Closed</td>
-                {% endif %}
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+        {% for rides in rides_list %}
+          <div class="col-sm-6">
+            <br/>
+            <center>
+              <!-- Name of each land/ride category -->
+              <h2>{{ land_names.forloop.counter0 }}</h2>
+            </center>
+
+            <table class="table table-borderless table-striped table-info table-hover table-active">
+              <thead class="bg-info">
+                <tr>
+                  <th>Name</th>
+                  <th>Wait Time</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody> 
+                {% for ride in rides %}
+                <tr>
+                  <td>{{ ride.name }}</td>
+                  {% if ride.open_state == True %}
+                    <td>{{ ride.wait_time }}</td>
+                  {% else %}
+                    <td>Closed</td>
+                  {% endif %}
+                  {% if user.is_authenticated %}
+                    <td>
+                      <button class="subscribe-button" data-toggle="collapse" data-target="#subscribe">
+                        <!-- TODO: Crop arrow image -->
+                        <img class="subscribe-expand" src="static/images/arrow_expand.png"/>
+                      </button>
+
+                      <!-- TODO: Auto-submit form with toggle slider button to enable email notifications -->
+                      <div id="subscribe" class="collapse">
+                        Subscribe
+                      </div>
+                    </td>
+                  {% endif %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endfor %}
 
         <div class="col-sm-6">
           <br/>

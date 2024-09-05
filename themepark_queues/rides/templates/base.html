@@ -19,7 +19,7 @@
   <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+    <nav class="navbar navbar-expand-lg navbar-light bg-info sticky-top">
 
       <!-- Brand/Logo Placeholder on Navbar -->
       <a class="navbar-brand" href="/">Themepark Queue Times</a>
@@ -34,13 +34,18 @@
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
         </ul>
-
-        <!-- TODO: Change to Log out if logged in -->
+        
         <!-- Login -->
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="login">Log in <span class="sr-only">(current)</span></a>
-          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item active">
+              <a class="nav-link" href="account">Account: {{ user.email }} <span class="sr-only">(current)</span></a>
+            </li>
+          {% else %}
+            <li class="nav-item active">
+              <a class="nav-link" href="login">Log in <span class="sr-only">(current)</span></a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
