@@ -9,8 +9,17 @@
           <div class="col-sm-6">
             <br/>
             <center>
+              <!-- TODO: Get rid of single quotes around table title -->
               <!-- Name of each land/ride category -->
-              <h2>{{ land_names.forloop.counter0 }}</h2>
+              <h2>
+                <script>
+                  var land_names_str = "{{ land_names }}";
+                  var iteration = "{{ forloop.counter }}";
+                  var land_names = (land_names_str.replace("[", "").replace("]", "").replace("'", "")).split(",");
+
+                  document.write(land_names[iteration-1]);
+                </script>
+              </h2>
             </center>
 
             <table class="table table-borderless table-striped table-info table-hover table-active">
@@ -32,17 +41,12 @@
                   {% endif %}
                   {% if user.is_authenticated %}
                     <td>
-                      <!-- Make this a link to the ride page where user can enable email notifications -->
-                      <button class="subscribe-button" data-toggle="collapse" data-target="#subscribe">
-                        <!-- TODO: Crop arrow image -->
-                        <img class="subscribe-expand" src="static/images/arrow_expand.png"/>
-                      </button>
-
-                      <!-- TODO: Auto-submit form with toggle slider button to enable email notifications.
-                      Also make it different for every row -->
-                      <div id="subscribe" class="collapse">
-                        Subscribe
-                      </div>
+                      <a href="ride-info/{{ ride.id }}">
+                        <button class="ride-button">
+                          <!-- TODO: Crop arrow image -->
+                          <img class="arrow-expand" src="static/images/arrow_expand.png"/>
+                        </button>
+                      </a>
                     </td>
                   {% endif %}
                 </tr>
@@ -51,34 +55,6 @@
             </table>
           </div>
         {% endfor %}
-
-        <div class="col-sm-6">
-          <br/>
-          <center>
-            <h2>Family</h2>
-          </center>
-
-          <table class="table table-borderless table-striped table-info table-hover table-active">
-            <thead class="bg-info">
-              <tr>
-                <th>Name</th>
-                <th>Wait Time</th>
-              </tr>
-            </thead>
-            <tbody> 
-              {% for ride in rides_family %}
-              <tr>
-                <td>{{ ride.name }}</td>
-                {% if ride.open_state == True %}
-                  <td>{{ ride.wait_time }}</td>
-                {% else %}
-                  <td>Closed</td>
-                {% endif %}
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
       </div>
 
     </div>

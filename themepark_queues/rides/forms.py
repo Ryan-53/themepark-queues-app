@@ -48,7 +48,6 @@ class CreateUserForm(UserCreationForm):
 class LoginUserForm(AuthenticationForm):
   """ Authenticate/Login a user form """
 
-  # TODO: Change username to email
   username = forms.CharField(widget=forms.TextInput())
   password = forms.CharField(widget=forms.PasswordInput())
   

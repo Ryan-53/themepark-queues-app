@@ -1,14 +1,16 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpRequest
 from django.template import loader
 from django.db.models import QuerySet
 from .api_request import get_queue_data
 from .forms import CreateUserForm, LoginUserForm
 from django.contrib import auth
-from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from .models import Ride
+from django.conf import settings
 
-def home(request) -> HttpResponse:
+def home(request: HttpRequest) -> HttpResponse:
+  """ Provides data for tables of rides seperated by ride category """
 
   template = loader.get_template('home.html')
 
@@ -30,9 +32,9 @@ def home(request) -> HttpResponse:
   return render(request, 'home.html', context)
 
 
-def register(request) -> HttpResponse:
+def register(request: HttpRequest) -> HttpResponse:
 
-  form = CreateUserForm()
+  form: CreateUserForm = CreateUserForm()
 
   # If the form has been submitted
   if request.method == 'POST':
@@ -52,9 +54,9 @@ def register(request) -> HttpResponse:
   return render(request, 'register.html', context)
 
 
-def login(request) -> HttpResponse:
+def login(request: HttpRequest) -> HttpResponse:
 
-  form = LoginUserForm()
+  form: LoginUserForm = LoginUserForm()
 
   # If the form has been submitted
   if request.method == "POST":
@@ -66,7 +68,7 @@ def login(request) -> HttpResponse:
       username = request.POST.get('username')
       password = request.POST.get('password')
 
-      user = authenticate(request, username=username, password=password)
+      user = auth.authenticate(request, username=username, password=password)
 
       if user is not None:
         auth.login(request, user)
@@ -81,7 +83,7 @@ def login(request) -> HttpResponse:
 
 
 @login_required(login_url="login")
-def account(request) -> HttpResponse:
+def account(request: HttpRequest) -> HttpResponse:
 
 
   return render(request, 'account.html')
@@ -92,3 +94,30 @@ def logout(request) -> HttpResponse:
   auth.logout(request)
 
   return redirect("/")
+
+
+def ride_info(request: HttpRequest, ride_id: int) -> HttpResponse:
+  """ Provides info about a specific ride and enables user to subscribe to
+  email notifications for reopening. Handles PUT requests to firebase DB to
+  store email notification data. """
+
+  ride: Ride = get_object_or_404(Ride, id=ride_id)
+
+
+  subscribed: bool = False
+
+  if request.method == "POST":
+
+    firebase_url: str = settings.FIREBASE_DB_URL
+
+  context = {
+    'ride': ride,
+    'subscribed': subscribed
+  }
+
+  return render(request, 'ride_info.html', context)
+
+
+def about(request: HttpRequest) -> HttpResponse:
+
+  return render(request, 'about.html')

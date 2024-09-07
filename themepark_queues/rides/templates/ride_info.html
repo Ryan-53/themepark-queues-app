@@ -1,0 +1,25 @@
+{% include 'base.html' %}
+
+<body>
+  <div class="container">
+    </br>
+    <h2>{{ ride.name }}</h2>
+    
+    Ride type: {{ ride.type }}
+    </br>
+    Wait time: {{ ride.wait_time }}
+
+
+    {% if ride.open_state == False %}
+      </br></br>
+      Ride currently closed
+      <!-- TODO: Add button to subscribe for opening notifications depending on:
+        1. Only if the ride is closed
+        2. And user is not already subscribed  -->
+      <form action="/ride-info/{{ ride.id }}" method="post">
+        {% csrf_token %}
+        <button type="submit">Subscribe </button>
+      </form>
+    {% endif %}
+  </div>
+</body>

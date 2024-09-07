@@ -1,18 +1,33 @@
+/* General Style rules */
+
+body {
+  background-color: lightcyan;
+}
+
 .asteriskField {
   display: none;
 }
 
-.subscribe-expand {
+.arrow-expand {
   display: flex;
   height: 20px;
   width: 20px;
 }
 
-.subscribe-button {
+.ride-button {
   border: none;
   cursor: pointer;
   appearance: none;
   background-color: inherit;
+}
+
+.navbar{
+  box-shadow: 0px 6px 3px -3px #a9d8e7;
+}
+
+.navbar-logo {
+  height: 28px;
+  width: 28px;
 }
 
 /*

@@ -1,10 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en">
+<!-- Loads favicon -->
+{% load static %}
+
   <head>
     <title>Themepark Queues</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1 shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Linking local CSS file -->
@@ -19,19 +23,31 @@
   <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-info sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-info sticky-top shadow">
 
+      <!-- TODO: Use django static to load image (better practice?)
       <!-- Brand/Logo Placeholder on Navbar -->
-      <a class="navbar-brand" href="/">Themepark Queue Times</a>
+      <a class="navbar-brand" href="/">
+        <img class="navbar-logo" src="/static/images/favicon.png">
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Home -->
+      <!-- Collapses navbar so it can be accessed in an expandable menu when the screen is too small -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Navbar links on right -->
         <ul class="navbar-nav mr-auto">
+
+          <!-- Home -->
           <li class="nav-item active">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/">Home </a>
+          </li>
+
+          <!-- About -->
+          <li class="nav-item active">
+            <a class="nav-link" href="/about">About </a>
           </li>
         </ul>
         
@@ -39,11 +55,11 @@
         <ul class="navbar-nav ml-auto">
           {% if user.is_authenticated %}
             <li class="nav-item active">
-              <a class="nav-link" href="account">Account: {{ user.email }} <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/account">Account: {{ user.email }} </a>
             </li>
           {% else %}
             <li class="nav-item active">
-              <a class="nav-link" href="login">Log in <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="/login">Log in </a>
             </li>
           {% endif %}
         </ul>

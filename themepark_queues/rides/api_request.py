@@ -31,7 +31,7 @@ def get_queue_data(park_id: int) -> tuple[QuerySet, QuerySet]:
   ride_types = ['Family', 'Thrills']
   for i in range(len(ride_types)):
 
-    ## TODO Improve this loop to use object in list
+    ## IMPROVE_TODO: Improve this loop to use object in list
     for cur_ride in (rides_req_lands[i])['rides']:
 
       ride = Ride(
