@@ -8,7 +8,7 @@ Purpose: Contains additional functions used to retrieve queue data from
 
 from django.db.models import QuerySet
 import requests
-from .models import Ride
+from ..models import Ride
 
 def get_queue_data(park_id: int) -> tuple[QuerySet, QuerySet]:
   """ Retrieves all current ride data for the park of park_id passed and
@@ -48,4 +48,12 @@ def get_queue_data(park_id: int) -> tuple[QuerySet, QuerySet]:
   ## DYNAMIC_TODO: Change so it filters by any type not just for AT
   return (Ride.objects.filter(type = 'Family').order_by('name'),
     Ride.objects.filter(type = 'Thrills').order_by('name'))
+
+
+def main() -> None:
+  
+  return None
+
+if __name__ == '__main__':
+  main()
   

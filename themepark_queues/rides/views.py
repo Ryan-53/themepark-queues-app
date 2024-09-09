@@ -2,12 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpRequest
 from django.template import loader
 from django.db.models import QuerySet
-from .api_request import get_queue_data
 from .forms import CreateUserForm, LoginUserForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import Ride
-from django.conf import settings
+
+# Utility functions
+from .utils import get_queue_data, add_notif
 
 def home(request: HttpRequest) -> HttpResponse:
   """ Provides data for tables of rides seperated by ride category """
@@ -103,16 +104,25 @@ def ride_info(request: HttpRequest, ride_id: int) -> HttpResponse:
 
   ride: Ride = get_object_or_404(Ride, id=ride_id)
 
-
+  ## IMPROVE_TODO: Handle when user is already subscribed.
+  ## - Hold subscribed state somewhere to check.
+  ## This is currently handled by not adding duplicate email addresses.
   subscribed: bool = False
 
   if request.method == "POST":
+    if request.user.is_authenticated:
 
-    firebase_url: str = settings.FIREBASE_DB_URL
+      ## IMPROVE_TODO: This type hint issue should be addressed
+      user_email: str = request.user.email # type: ignore
+
+      # TODO: Maybe return status code (maybe just log this and return None)
+      add_notif(ride_id=ride_id, user_email=user_email)
+
+      subscribed = True
 
   context = {
     'ride': ride,
-    'subscribed': subscribed
+    'subscribed': subscribed,
   }
 
   return render(request, 'ride_info.html', context)

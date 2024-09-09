@@ -10,7 +10,7 @@
     Wait time: {{ ride.wait_time }}
 
 
-    {% if ride.open_state == False %}
+    {% if ride.open_state == False and user.is_authenticated %}
       </br></br>
       Ride currently closed
       <!-- TODO: Add button to subscribe for opening notifications depending on:
@@ -20,6 +20,11 @@
         {% csrf_token %}
         <button type="submit">Subscribe </button>
       </form>
+    {% endif %}
+
+    {% if subscribed == True %}
+      </br></br>
+      User is subscribed
     {% endif %}
   </div>
 </body>

@@ -32,14 +32,14 @@
               </thead>
               <tbody> 
                 {% for ride in rides %}
-                <tr>
-                  <td>{{ ride.name }}</td>
-                  {% if ride.open_state == True %}
-                    <td>{{ ride.wait_time }}</td>
-                  {% else %}
-                    <td>Closed</td>
-                  {% endif %}
-                  {% if user.is_authenticated %}
+                  <tr>
+                    <td>{{ ride.name }}</td>
+                    {% if ride.open_state == True %}
+                      <td>{{ ride.wait_time }}</td>
+                    {% else %}
+                      <td>Closed</td>
+                    {% endif %}
+
                     <td>
                       <a href="ride-info/{{ ride.id }}">
                         <button class="ride-button">
@@ -48,8 +48,8 @@
                         </button>
                       </a>
                     </td>
-                  {% endif %}
-                </tr>
+                  </tr>
+
                 {% endfor %}
               </tbody>
             </table>
