@@ -14,6 +14,10 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
+# TODO: Not neccessary when deployed
+# Loads in environment variables
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +31,10 @@ SECRET_KEY = "django-insecure-&0qn%o4c_#+4ky)#eqs*=1y563kus2$2ac9&to^%as^$uj@p)_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+  os.getenv('LOCAL_IP'),
+  'localhost'
+]
 
 
 # Application definition
@@ -39,9 +46,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'rides',
-    'crispy_forms',
-    'crispy_bootstrap4'
+    "rides",
+    "crispy_forms",
+    "crispy_bootstrap4",
+    "django.utils.timezone"
 ]
 
 MIDDLEWARE = [
@@ -132,5 +140,4 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Loading firebase URL from environment variable
-load_dotenv()
 FIREBASE_DB_URL = os.getenv('FIREBASE_DB_URL')

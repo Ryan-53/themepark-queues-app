@@ -11,12 +11,4 @@ class Ride(models.Model):
 
   def __str__(self) -> str:
     return self.name
-  
-# class User(models.Model):
-
-#   email = models.EmailField(max_length=100)
-#   password = models.CharField(max_length=255)
-
-#   def __str__(self) -> str:
-#     return self.email
 

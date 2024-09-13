@@ -5,7 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, Submit, Field
 
 class CreateUserForm(UserCreationForm):
-  """ Create a user form """
+  """Create a user form"""
 
   class Meta:
     model = User
@@ -33,7 +33,7 @@ class CreateUserForm(UserCreationForm):
     self.fields['password2'].label = "Re-enter password"
 
   def save(self, commit=True):
-    """ Overides parent save method to add in username as the email """
+    """Overides parent save method to add in username as the email"""
 
     # Call parent save method but don't commit to DB yet
     user = super().save(commit=False)
@@ -46,7 +46,7 @@ class CreateUserForm(UserCreationForm):
     return user
 
 class LoginUserForm(AuthenticationForm):
-  """ Authenticate/Login a user form """
+  """Authenticate/Login a user form"""
 
   username = forms.CharField(widget=forms.TextInput())
   password = forms.CharField(widget=forms.PasswordInput())

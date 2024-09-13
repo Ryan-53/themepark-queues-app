@@ -6,12 +6,13 @@ from .forms import CreateUserForm, LoginUserForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import Ride
+from django.conf import settings
 
 # Utility functions
 from .utils import get_queue_data, add_notif
 
 def home(request: HttpRequest) -> HttpResponse:
-  """ Provides data for tables of rides seperated by ride category """
+  """Provides data for tables of rides seperated by ride category"""
 
   template = loader.get_template('home.html')
 
@@ -98,15 +99,19 @@ def logout(request) -> HttpResponse:
 
 
 def ride_info(request: HttpRequest, ride_id: int) -> HttpResponse:
-  """ Provides info about a specific ride and enables user to subscribe to
+  """Provides info about a specific ride and enables user to subscribe to
   email notifications for reopening. Handles PUT requests to firebase DB to
-  store email notification data. """
+  store email notification data."""
 
+  ### IMPROVE_TODO: Get live data to the ride_info page instead of just
+  ### taking last updated home page data. (maybe request data for
+  ### individual ride directly from queue-times.com?)
   ride: Ride = get_object_or_404(Ride, id=ride_id)
 
-  ## IMPROVE_TODO: Handle when user is already subscribed.
+  ## IMPROVE_TODO: Handle when user is already subscribed
   ## - Hold subscribed state somewhere to check.
-  ## This is currently handled by not adding duplicate email addresses.
+  ## This is currently handled by not adding duplicate email addresses to
+  ## remote DB.
   subscribed: bool = False
 
   if request.method == "POST":
@@ -115,8 +120,13 @@ def ride_info(request: HttpRequest, ride_id: int) -> HttpResponse:
       ## IMPROVE_TODO: This type hint issue should be addressed
       user_email: str = request.user.email # type: ignore
 
-      # TODO: Maybe return status code (maybe just log this and return None)
-      add_notif(ride_id=ride_id, user_email=user_email)
+      # Loads remote database url from settings
+      db_url: str = settings.FIREBASE_DB_URL
+
+      # IMPROVE_TODO: Maybe return status code to display on website
+      # (maybe just log this and return None)
+      ## DYNAMIC_TODO: Make park_id change depending on park
+      add_notif(park_id=1, ride_id=ride_id, ride_name=ride.name, user_email=user_email, db_url=db_url)
 
       subscribed = True
 

@@ -1,5 +1,6 @@
 # Virtual environments
 env/
+.venv
 
 # Local cache
 themepark_queues/themepark_queues/__pycache__/

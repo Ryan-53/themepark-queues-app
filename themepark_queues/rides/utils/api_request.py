@@ -11,8 +11,8 @@ import requests
 from ..models import Ride
 
 def get_queue_data(park_id: int) -> tuple[QuerySet, QuerySet]:
-  """ Retrieves all current ride data for the park of park_id passed and
-  updates database with it so it can be displayed """
+  """Retrieves all current ride data for the park of park_id passed and
+  updates database with it so it can be displayed"""
 
   api_url = f"https://queue-times.com/parks/{park_id}/queue_times.json"
 
@@ -28,10 +28,16 @@ def get_queue_data(park_id: int) -> tuple[QuerySet, QuerySet]:
   ## Already implemented in web scraper.
   # Sets ride type to family as the first list of rides are all of that
   # type.
-  ride_types = ['Family', 'Thrills']
-  for i in range(len(ride_types)):
 
-    ## IMPROVE_TODO: Improve this loop to use object in list
+  ## IMPROVE_TODO: This could be incorporated into following loop using
+  ## enumerate for higher efficiency
+  ride_types: list[str] = []
+  for category in rides_req_lands:
+    ride_types.append(category['name'])
+
+  # Creates an object for each ride in the local DB
+  for i in range(len(rides_req_lands)):
+
     for cur_ride in (rides_req_lands[i])['rides']:
 
       ride = Ride(
