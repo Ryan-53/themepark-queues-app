@@ -9,7 +9,7 @@ Purpose: Tests views.py file for all interaction with user views and html
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, get_user
 from django.contrib import auth
 from django.http import HttpRequest
 from unittest.mock import patch
@@ -23,6 +23,7 @@ class HomeViewTest(TestCase):
 
   def setUp(self):
     """Simulates get_queue_data function as a mock api request"""
+
     self.mocked_rides = (['family_ride_1', 'family_ride_2'], ['thrill_ride_1', 'thrill_ride_2'])
     self.land_names = ["Family", "Thrills"]
 
@@ -41,6 +42,7 @@ class HomeViewTest(TestCase):
   @patch('rides.views.get_queue_data')
   def test_home_view_context_rides(self, mock_get_queue_data):
     """Tests that ride context is passed correctly"""
+
     mock_get_queue_data.return_value = self.mocked_rides
     response = self.client.get(reverse('home'))
 
@@ -52,6 +54,7 @@ class HomeViewTest(TestCase):
   @patch('rides.views.get_queue_data')
   def test_home_view_context_lands(self, mock_get_queue_data):
     """Tests that ride category/land context is passed correctly"""
+
     mock_get_queue_data.return_value = self.mocked_rides
     response = self.client.get(reverse('home'))
 
@@ -143,8 +146,6 @@ class RegisterViewTest(TestCase):
 
     response = self.client.post(reverse('register'), invalid_data)
     self.assertEqual(response.status_code, 200)
-
-    ##### TODO: Make this an email address error
     self.assertFormError(response, 'form', 'email', "Enter a valid email address.")
   
   def test_register_view_post_invalid_data_password(self):
@@ -229,25 +230,91 @@ class LoginViewTest(TestCase):
     self.assertFalse(user.is_authenticated)
 
 
+class AccountViewTest(TestCase):
+
+  def setUp(self):
+    """Sets up test user to log in to"""
+
+    self.user = User.objects.create_user(
+      username='testuser@example.com', 
+      email='testuser@example.com', 
+      password='testpass'
+    )
+
+  def test_account_view_authenticated(self):
+    """Tests account view loads as expected if user is logged in"""
+
+    self.client.login(username='testuser@example.com', password='testpass')
+    response = self.client.get(reverse('account'))
+    self.assertEqual(response.status_code, 200)
+
+  def test_account_view_anonymous(self):
+    """Tests account view redirects to login page if user is
+    unauthenticated"""
+
+    response = self.client.get(reverse('account'))
+    self.assertRedirects(response=response,
+                         expected_url='/login?next=/account',
+                         status_code=302,
+                         target_status_code=200,
+                         fetch_redirect_response=True)
+
+
+class LogoutViewTest(TestCase):
+
+  def setUp(self):
+    """Sets up test user to log in to"""
+
+    self.user = User.objects.create_user(
+      username='testuser@example.com', 
+      email='testuser@example.com', 
+      password='testpass'
+    )
+
+  def test_logout_redirects_anonymous(self):
+    """Tests that an unauthenticated user should be redirected to the
+    login page if trying to logout"""
+
+    response = self.client.get(reverse('logout'))
+    self.assertRedirects(response, '/login?next=/logout', 302, 200)
+
+  def test_logout_authenticated_user(self):
+    """Tests that an authenticated user can logout sucessfully and get
+    redirected to the homepage"""
+
+    # Log the user in
+    self.client.login(username='testuser@example.com', password='testpass')
+
+    # Ensure user is authenticated before logout
+    user = get_user(self.client)
+    self.assertTrue(user.is_authenticated)
+
+    # Ensure the user is logged out and redirected to the homepage
+    response = self.client.get(reverse('logout'))
+    self.assertRedirects(response, '/')
+
+    # Ensure user is no longer authenticated after logout
+    user = get_user(self.client)
+    self.assertFalse(user.is_authenticated)
+
+
 class RideInfoViewTest(TestCase):
 
   def setUp(self):
     """Sets up test user to allow subscription and sets up Ride to see
     info"""
 
-    # Create a test user and log in
     self.user = User.objects.create_user(
-      username='testuser', 
+      username='testuser@example.com', 
       email='testuser@example.com', 
       password='testpass'
     )
-    self.client.login(username='testuser', password='testpass')
 
     # Create a Ride object
     self.ride = Ride.objects.create(
       id=1,
       name="Test Ride",
-      type="Thrill",
+      category="Thrill",
       open_state=False,
       wait_time=30,
       last_updated=timezone.now()
@@ -257,6 +324,9 @@ class RideInfoViewTest(TestCase):
   @patch('rides.views.add_notif')
   def test_ride_info_view_authenticated_user(self, mock_add_notif):
     """Tests that a user can subscribe if they are logged in"""
+
+    # Logs user in
+    self.client.login(username='testuser@example.com', password='testpass')
 
     # Post request simulates user subscribing
     response = self.client.post(reverse('ride-info', kwargs={'ride_id': self.ride.id}))
@@ -275,10 +345,16 @@ class RideInfoViewTest(TestCase):
 
   def test_ride_info_view_anonymous_user(self):
     """Tests that a user cannot subscribe if they aren't logged in"""
-        
+
     response = self.client.get(reverse('ride-info', kwargs={'ride_id': self.ride.id}))
     self.assertEqual(response.status_code, 200)
     self.assertFalse(response.context['subscribed'])
 
 
+class AboutViewTest(TestCase):
+
+  def test_about_view_rendered(self):
+
+    response = self.client.get(reverse('about'))
+    self.assertEqual(response.status_code, 200)
 

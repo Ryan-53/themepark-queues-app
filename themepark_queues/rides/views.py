@@ -6,7 +6,6 @@ from .forms import CreateUserForm, LoginUserForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import Ride
-from django.conf import settings
 import json
 
 # Utility functions
@@ -20,13 +19,14 @@ def home(request: HttpRequest) -> HttpResponse:
   ## DYNAMIC_TODO: Make this change when a different park is requested
   park_id: int = 1
 
-  rides: tuple[QuerySet, QuerySet] = get_queue_data(park_id=park_id)
+  rides: tuple[list[QuerySet], list[str]] = get_queue_data(park_id=park_id)
 
   land_names: list[str] = ["Family", "Thrills"]
 
   context: dict = {
     'title': 'Homepage',
-    'rides_list': rides,
+    # First item in tuple is the list of Querysets for rides of different categories
+    'rides_list': rides[0],
     'land_names': json.dumps(land_names)
   }
 
@@ -84,11 +84,9 @@ def login(request: HttpRequest) -> HttpResponse:
 @login_required(login_url="login")
 def account(request: HttpRequest) -> HttpResponse:
 
-
   return render(request, 'account.html')
 
 
-# TODO: Last view unit test todo
 @login_required(login_url="login")
 def logout(request) -> HttpResponse:
 
@@ -119,13 +117,13 @@ def ride_info(request: HttpRequest, ride_id: int) -> HttpResponse:
       ## IMPROVE_TODO: This type hint issue should be addressed
       user_email: str = request.user.email # type: ignore
 
-      # Loads remote database url from settings
-      db_url: str = settings.FIREBASE_DB_URL
-
       # IMPROVE_TODO: Maybe return status code to display on website
       # (maybe just log this and return None)
       ## DYNAMIC_TODO: Make park_id change depending on park
-      add_notif(park_id=1, ride_id=ride_id, ride_name=ride.name, user_email=user_email, db_url=db_url)
+      add_notif(park_id=1,
+                ride_id=ride_id,
+                ride_name=ride.name,
+                user_email=user_email)
 
       subscribed = True
 
