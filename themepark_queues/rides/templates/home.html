@@ -4,20 +4,18 @@
     <div class="container">
           
       <div class="row">
-
+        
         {% for rides in rides_list %}
           <div class="col-sm-6">
             <br/>
             <center>
-              <!-- TODO: Get rid of single quotes around table title -->
               <!-- Name of each land/ride category -->
               <h2>
                 <script>
-                  var land_names_str = "{{ land_names }}";
+                  // Parse land_names as a json object
+                  var land_names = JSON.parse("{{ land_names|escapejs }}");
                   var iteration = "{{ forloop.counter }}";
-                  var land_names = (land_names_str.replace("[", "").replace("]", "").replace("'", "")).split(",");
-
-                  document.write(land_names[iteration-1]);
+                  document.write(land_names[iteration - 1]);
                 </script>
               </h2>
             </center>

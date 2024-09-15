@@ -7,6 +7,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from .models import Ride
 from django.conf import settings
+import json
 
 # Utility functions
 from .utils import get_queue_data, add_notif
@@ -21,14 +22,12 @@ def home(request: HttpRequest) -> HttpResponse:
 
   rides: tuple[QuerySet, QuerySet] = get_queue_data(park_id=park_id)
 
-  land_names: list[str] = ['Family', 'Thrills']
+  land_names: list[str] = ["Family", "Thrills"]
 
   context: dict = {
     'title': 'Homepage',
-    'rides_family': rides[0],
-    'rides_thrill': rides[1],
     'rides_list': rides,
-    'land_names': land_names
+    'land_names': json.dumps(land_names)
   }
 
   return render(request, 'home.html', context)
@@ -46,10 +45,9 @@ def register(request: HttpRequest) -> HttpResponse:
 
       form.save()
 
-      return redirect("/")
+      return redirect("/login")
 
   context: dict = {
-    'title': 'User registration',
     'form': form
   }
 
@@ -77,7 +75,6 @@ def login(request: HttpRequest) -> HttpResponse:
         return redirect("/")
 
   context = {
-    'title': 'User registration',
     'form': form
   }
 
@@ -91,6 +88,8 @@ def account(request: HttpRequest) -> HttpResponse:
   return render(request, 'account.html')
 
 
+# TODO: Last view unit test todo
+@login_required(login_url="login")
 def logout(request) -> HttpResponse:
 
   auth.logout(request)

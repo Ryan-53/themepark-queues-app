@@ -15,6 +15,14 @@ api_test.py
 
 # Local Settings
 settings.json
+.vscode
 
 # Environment variables
 .env
+
+# Testing Coverage
+themepark_queues/.coverage
+themepark_queues/htmlcov
+
+# Local shell scripts
+*.ps1

@@ -1,3 +1,10 @@
+"""
+Name: test_views.py
+Author: Ryan Gascoigne-Jones
+
+Purpose: Tests models.py file
+"""
+
 from django.test import TestCase
 from datetime import datetime
 from ..models import Ride

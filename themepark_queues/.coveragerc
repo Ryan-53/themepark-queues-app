@@ -1,0 +1,11 @@
+[run]
+omit =
+  themepark_queues/*
+  rides/migrations/*
+  *__init__.py
+  manage.py
+
+
+[report]
+exclude_lines =
+    if __name__ == '__main__':
