@@ -80,7 +80,7 @@ def compile_rides_list(ride_categories: list[str]) -> list[QuerySet]:
 
 def main() -> None:
   
-  return None
+  return None # pragma: no cover
 
 if __name__ == '__main__':
   main()

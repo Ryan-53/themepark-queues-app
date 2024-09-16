@@ -74,7 +74,7 @@ def get_park_url(park_id: int) -> str:
   """Produces the location in the remote DB where all the ride
   notification data for a specific ride"""
 
-  park_url: str = f"{get_notif_db_url}{park_id}"
+  park_url: str = f"{get_notif_db_url()}/{park_id}"
 
   return park_url
 
@@ -90,11 +90,6 @@ def get_ride_url(park_id: int, ride_id: int) -> str:
 
 def main() -> None:
 
-  add_notif(park_id=328,
-            ride_id=13905,
-            ride_name="Dragon's Fury",
-            user_email="rgj@hotmail.co.uk")
-  
   return None
 
 if __name__ == '__main__':
