@@ -11,27 +11,23 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model, get_user
 from django.contrib import auth
-from django.http import HttpRequest
 from unittest.mock import patch
-import json
 from ..models import Ride
 from django.utils import timezone
-from django.conf import settings
 
 
 class HomeViewTest(TestCase):
 
   def setUp(self):
-    """Simulates get_queue_data function as a mock api request"""
+    """Simulates get_queue_data function as a mock API request"""
 
-    self.mocked_rides = (['family_ride_1', 'family_ride_2'], ['thrill_ride_1', 'thrill_ride_2'])
-    self.land_names = ["Family", "Thrills"]
+    self.mocked_rides = ([['family_ride_1', 'family_ride_2'], ['thrill_ride_1', 'thrill_ride_2']], ['Family', 'Thrills'])
 
   @patch('rides.views.get_queue_data')
   def test_home_view_rendered(self, mock_get_queue_data):
     """Tests that the homepage is rendered correctly"""
 
-    #
+    # Mocks the get_queue_data function which retrieves data from an API
     mock_get_queue_data.return_value = self.mocked_rides
     response = self.client.get(reverse('home'))
 
@@ -49,7 +45,7 @@ class HomeViewTest(TestCase):
     # Check rides list is in context
     self.assertIn('rides_list', response.context)
     # Check context contains rides
-    self.assertEqual(response.context['rides_list'], (['family_ride_1', 'family_ride_2'], ['thrill_ride_1', 'thrill_ride_2']))
+    self.assertEqual(response.context['rides_list'], [['family_ride_1', 'family_ride_2'], ['thrill_ride_1', 'thrill_ride_2']])
 
   @patch('rides.views.get_queue_data')
   def test_home_view_context_lands(self, mock_get_queue_data):
@@ -60,7 +56,7 @@ class HomeViewTest(TestCase):
 
     # Check context contains land_names and it's correctly converted to JSON
     self.assertIn('land_names', response.context)
-    self.assertEqual(response.context['land_names'], json.dumps(self.land_names))
+    self.assertEqual(response.context['land_names'], '["Family", "Thrills"]')
 
   @patch('rides.views.get_queue_data')
   def test_home_view_contains_table_headers(self, mock_get_queue_data):
@@ -78,14 +74,14 @@ class HomeViewTest(TestCase):
     """Tests that homepage contains the correct data in ride tables"""
 
     # Mock return value for get_queue_data
-    mocked_rides = [
+    mocked_rides = ([
       {'name': 'family_ride_1', 'wait_time': 30, 'open_state': True},
       {'name': 'family_ride_2', 'wait_time': 20, 'open_state': True},
       {'name': 'thrill_ride_1', 'wait_time': 10, 'open_state': True},
       {'name': 'thrill_ride_2', 'wait_time': 5, 'open_state': True},
-    ]
+    ], ['Family', 'Thrills'])
 
-    mock_get_queue_data.return_value = ([ride for ride in mocked_rides[:2]], [ride for ride in mocked_rides[2:]])
+    mock_get_queue_data.return_value = [[ride for ride in mocked_rides[:2]], [ride for ride in mocked_rides[2:]]]
     response = self.client.get(reverse('home'))
 
     # Check that the page contains the ride names and wait times
@@ -339,8 +335,7 @@ class RideInfoViewTest(TestCase):
       park_id=1,
       ride_id=self.ride.id,
       ride_name=self.ride.name,
-      user_email='testuser@example.com',
-      db_url=settings.FIREBASE_DB_URL
+      user_email='testuser@example.com'
     )
 
   def test_ride_info_view_anonymous_user(self):
