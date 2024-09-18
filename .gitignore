@@ -26,3 +26,6 @@ themepark_queues/htmlcov
 
 # Local shell scripts
 *.ps1
+
+# Deployment keys
+themeparkqueues.pem
