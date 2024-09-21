@@ -15,8 +15,6 @@ import os
 from dotenv import load_dotenv
 from django.core.management.utils import get_random_secret_key
 
-# TODO: Not neccessary when deployed
-# Loads in environment variables
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
