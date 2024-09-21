@@ -32,6 +32,3 @@ themeparkqueues.pem
 
 # Local static generated files
 themepark_queues/static/
-
-# Local settings
-themepark_queues/themepark_queues/settings.py
