@@ -22,37 +22,39 @@
             </h2>
           </center>
 
-          <table class="table table-borderless table-striped table-info table-hover table-active">
-            <thead class="bg-info">
-              <tr>
-                <th>Name</th>
-                <th>Wait Time</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody> 
-              {% for ride in rides %}
+          <div class="table-rounded-corner">
+            <table class="table table-borderless table-striped table-info table-hover table-active rounded-table">
+              <thead class="bg-info">
                 <tr>
-                  <td>{{ ride.name }}</td>
-                  {% if ride.open_state == True %}
-                    <td>{{ ride.wait_time }}</td>
-                  {% else %}
-                    <td>Closed</td>
-                  {% endif %}
-
-                  <td>
-                    <a href="ride-info/{{ ride.id }}">
-                      <button class="ride-button">
-                        <!-- TODO: Crop arrow image -->
-                        <img class="arrow-expand" src="static/images/arrow_expand.png"/>
-                      </button>
-                    </a>
-                  </td>
+                  <th>Name</th>
+                  <th>Wait Time</th>
+                  <th></th>
                 </tr>
+              </thead>
+              <tbody> 
+                {% for ride in rides %}
+                  <tr>
+                    <td>{{ ride.name }}</td>
+                    {% if ride.open_state == True %}
+                      <td>{{ ride.wait_time }}</td>
+                    {% else %}
+                      <td>Closed</td>
+                    {% endif %}
 
-              {% endfor %}
-            </tbody>
-          </table>
+                    <td>
+                      <a href="ride-info/{{ ride.id }}">
+                        <button class="ride-button btn btn-info">
+                          <!-- TODO: Crop arrow image -->
+                          <img class="arrow-expand" src="static/images/arrow_expand.png"/>
+                        </button>
+                      </a>
+                    </td>
+                  </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
         </div>
       {% endfor %}
     </div>
