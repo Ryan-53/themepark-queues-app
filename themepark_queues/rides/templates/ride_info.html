@@ -10,16 +10,23 @@
     Wait time: {{ ride.wait_time }}
 
 
-    {% if ride.open_state == False and user.is_authenticated %}
-      </br></br>
-      Ride currently closed
-      <!-- TODO: Add button to subscribe for opening notifications depending on:
-        1. Only if the ride is closed
-        2. And user is not already subscribed  -->
-      <form action="/ride-info/{{ ride.id }}" method="post">
-        {% csrf_token %}
-        <button type="submit">Subscribe </button>
-      </form>
+    {% if ride.open_state == False %}
+        </br></br>
+
+      {% if user.is_authenticated %}
+        Ride currently closed
+        <!-- TODO: Add button to subscribe for opening notifications depending on:
+          1. Only if the ride is closed
+          2. And user is not already subscribed  -->
+        <form action="/ride-info/{{ ride.id }}" method="post">
+          {% csrf_token %}
+          <button type="submit">Subscribe </button>
+        </form>
+
+      {% else %}
+        Please <a href="/login">login</a> to subscribe for notifications of ride reopening  
+
+      {% endif %}
     {% endif %}
 
     {% if subscribed == True %}
@@ -28,3 +35,5 @@
     {% endif %}
   </div>
 </body>
+
+{% include 'footer.html' %}

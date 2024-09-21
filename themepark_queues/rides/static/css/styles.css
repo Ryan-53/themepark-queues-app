@@ -2,6 +2,9 @@
 
 body {
   background-color: lightcyan;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .asteriskField {
@@ -28,6 +31,21 @@ body {
 .navbar-logo {
   height: 28px;
   width: 28px;
+}
+
+.custom-footer {
+  background-color: #d3e6ec;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  font-size: smaller;
+}
+
+.park-title {
+  padding-top: 5px;
+}
+
+.container {
+  flex: 1;
 }
 
 /*
