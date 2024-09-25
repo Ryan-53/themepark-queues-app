@@ -28,8 +28,11 @@ themepark_queues/htmlcov
 *.ps1
 *.sh
 
-# Deployment keys
-themeparkqueues.pem
+# Private keys
+*.pem
 
 # Local static generated files
 themepark_queues/static/
+
+# SSH keys
+*.pub
