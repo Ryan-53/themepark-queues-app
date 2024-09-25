@@ -25,44 +25,48 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-info sticky-top shadow">
 
-      <!-- TODO: Use django static to load image (better practice?)
-      <!-- Brand/Logo Placeholder on Navbar -->
-      <a class="navbar-brand" href="/">
-        <img class="navbar-logo" src="/static/images/favicon.png">
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <!-- Aligns navbar with body-->
+      <div class="container">
 
-      <!-- Collapses navbar so it can be accessed in an expandable menu when the screen is too small -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- TODO: Use django static to load image (better practice?)
+        <!-- Brand/Logo Placeholder on Navbar -->
+        <a class="navbar-brand" href="/">
+          <img class="navbar-logo" src="/static/images/favicon.png">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <!-- Navbar links on right -->
-        <ul class="navbar-nav mr-auto">
+        <!-- Collapses navbar so it can be accessed in an expandable menu when the screen is too small -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-          <!-- Home -->
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Home </a>
-          </li>
+          <!-- Navbar links on right -->
+          <ul class="navbar-nav mr-auto">
 
-          <!-- About -->
-          <li class="nav-item active">
-            <a class="nav-link" href="/about">About </a>
-          </li>
-        </ul>
-        
-        <!-- Login -->
-        <ul class="navbar-nav ml-auto">
-          {% if user.is_authenticated %}
+            <!-- Home -->
             <li class="nav-item active">
-              <a class="nav-link" href="/account">Account: {{ user.email }} </a>
+              <a class="nav-link" href="/">Home </a>
             </li>
-          {% else %}
+
+            <!-- About -->
             <li class="nav-item active">
-              <a class="nav-link" href="/login">Log in </a>
+              <a class="nav-link" href="/about">About </a>
             </li>
-          {% endif %}
-        </ul>
+          </ul>
+          
+          <!-- Login -->
+          <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+              <li class="nav-item active">
+                <a class="nav-link" href="/account">Account: {{ user.email }} </a>
+              </li>
+            {% else %}
+              <li class="nav-item active">
+                <a class="nav-link" href="/login">Log in </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
       </div>
     </nav>
     

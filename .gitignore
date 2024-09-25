@@ -33,6 +33,7 @@ themepark_queues/htmlcov
 
 # Local static generated files
 themepark_queues/static/
+themepark_queues/rides/static/images/favicon.png
 
 # SSH keys
 *.pub
