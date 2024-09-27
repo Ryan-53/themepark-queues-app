@@ -7,10 +7,12 @@
     
     Ride category: {{ ride.category }}
     </br>
-    Wait time: {{ ride.wait_time }}
-
-
-    {% if ride.open_state == False %}
+    
+    {% if ride.open_state == True %}
+      Wait time: {{ ride.wait_time }}
+    
+    {% else %}
+      Wait time: Closed
         </br></br>
 
       {% if user.is_authenticated %}
@@ -27,12 +29,13 @@
         Please <a href="/login">login</a> to subscribe for notifications of ride reopening  
 
       {% endif %}
+
+      {% if subscribed == True %}
+        </br></br>
+        You have subscribed
+      {% endif %}
     {% endif %}
 
-    {% if subscribed == True %}
-      </br></br>
-      You have subscribed
-    {% endif %}
   </div>
 </body>
 
