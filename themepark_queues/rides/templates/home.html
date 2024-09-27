@@ -31,9 +31,10 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody> 
+
+              <tbody>
                 {% for ride in rides %}
-                  <tr>
+                  <tr class="ride-row" data-href="ride-info/{{ ride.id }}">
                     <td>{{ ride.name }}</td>
                     {% if ride.open_state == True %}
                       {% if ride.wait_time < 30 %}
@@ -51,7 +52,7 @@
 
                     <td>
                       <a href="ride-info/{{ ride.id }}">
-                        <button class="ride-button btn btn-info">
+                        <button class="ride-button btn">
                           <!-- TODO: Crop arrow image -->
                           <img class="arrow-expand" src="static/images/arrow_expand.png"/>
                         </button>
@@ -68,6 +69,26 @@
     </div>
 
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Select all rows with the class 'ride-row'
+      const rows = document.querySelectorAll('.ride-row');
+      
+      rows.forEach(row => {
+        row.addEventListener('click', function() {
+          // Get the href from the data-href attribute
+          const href = row.getAttribute('data-href');
+          
+          // Redirect to the href
+          if (href) {
+            window.location.href = href;
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 
 {% include 'footer.html' %}
