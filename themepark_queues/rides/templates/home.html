@@ -36,14 +36,14 @@
                   <tr>
                     <td>{{ ride.name }}</td>
                     {% if ride.open_state == True %}
-                      {% if ride.wait_time < 20 %}
+                      {% if ride.wait_time < 30 %}
                         <td class="bold-text queue-short">
-                      {% elif ride.wait_time < 40 %}
+                      {% elif ride.wait_time < 50 %}
                         <td class="bold-text queue-med">
                       {% else %}
                         <td class="bold-text queue-long">
                       {% endif %}
-                        {{ ride.wait_time }}
+                        {{ ride.wait_time }} mins
                       </td>
                     {% else %}
                       <td class="bold-text">Closed</td>

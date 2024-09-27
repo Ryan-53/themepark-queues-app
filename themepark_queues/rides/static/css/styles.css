@@ -24,7 +24,7 @@ body {
 
 /* Navbar */
 
-.navbar{
+.navbar {
   box-shadow: 0px 0px 3px 0px #a9d8e7;
 }
 
@@ -42,7 +42,7 @@ body {
 .custom-footer {
   background-color: #d3e6ec;
   padding-top: 5px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   font-size: smaller;
 }
 
@@ -91,9 +91,61 @@ body {
 }
 
 .queue-med {
-  color: yellow;
+  color: orange;
 }
 
 .queue-long {
   color: red;
+}
+
+/* Ride info */
+
+.ride-info-card td {
+  background-color: #c4e0e0;
+}
+
+.ride-info-card th {
+  padding-bottom: 5px;
+}
+
+.ride-info-sub-button {
+  margin-top: 10px;
+}
+
+.subscription {
+  padding-top: 20px;
+}
+
+.button-back {
+  border-color: lightgray;
+  border-width: 1px;
+  margin-top: 10px;
+}
+
+/* Login */
+
+.button-signup {
+  border-color: lightgray;
+  border-width: 1px;
+  margin-top: 10px;
+}
+
+/* About */
+
+.about-card td {
+  background-color: #c4e0e0;
+}
+
+.about-card {
+  margin-bottom: 20px;
+}
+
+.about-card th {
+  padding-bottom: 12px;
+}
+
+/* Logout */
+
+.button-logout {
+  margin-top: 10px;
 }
