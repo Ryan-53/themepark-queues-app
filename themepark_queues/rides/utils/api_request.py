@@ -10,9 +10,9 @@ from django.db.models import QuerySet
 import requests
 from ..models import Ride
 
-def get_queue_data(park_id: int) -> tuple[list[QuerySet], list[str]]:
+def save_queue_data(park_id: int) -> list[str]:
   """Retrieves all current ride data for the park of park_id passed and
-  updates database with it so it can be displayed"""
+  updates local DB. Returns the list of categories for that park"""
 
   # Gets a list of all rides with attributes in dictionaries
   rides_req_lands: list[dict] = get_rides(park_id=park_id)
@@ -20,6 +20,16 @@ def get_queue_data(park_id: int) -> tuple[list[QuerySet], list[str]]:
   # List of all ride categories
   ride_categories: list[str] = create_rides(park_id=park_id,
                                        rides_lands=rides_req_lands)
+
+  return ride_categories
+
+
+def get_queue_data(park_id: int) -> tuple[list[QuerySet], list[str]]:
+  """Retrieves up to date ride data from DB for all rides in park by
+  category"""
+
+  # Saves ride data to local DB
+  ride_categories: list[str] = save_queue_data(park_id=park_id)
   
   # Compiles list of rides to show in tables
   rides: list[QuerySet] = compile_rides_list(ride_categories=ride_categories)
@@ -28,7 +38,7 @@ def get_queue_data(park_id: int) -> tuple[list[QuerySet], list[str]]:
 
 
 def get_rides(park_id: int) -> list[dict]:
-  """ Sends GET request to queue-times.com for the specified park """
+  """Sends GET request to queue-times.com for the specified park"""
 
   response = requests.get(f"https://queue-times.com/parks/{park_id}/"\
                           "queue_times.json")

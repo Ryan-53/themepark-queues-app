@@ -9,7 +9,7 @@ from .models import Ride
 import json
 
 # Utility functions
-from .utils import get_queue_data, add_notif
+from .utils import get_queue_data, add_notif, save_queue_data
 
 def home(request: HttpRequest) -> HttpResponse:
   """Provides data for tables of rides seperated by ride category"""
@@ -99,6 +99,9 @@ def ride_info(request: HttpRequest, ride_id: int) -> HttpResponse:
   """Provides info about a specific ride and enables user to subscribe to
   email notifications for reopening. Handles PUT requests to firebase DB to
   store email notification data."""
+
+  # DYNAMIC_TODO: Change to use dynamic park_id
+  save_queue_data(park_id=1)
 
   ### IMPROVE_TODO: Get live data to the ride_info page instead of just
   ### taking last updated home page data. (maybe request data for

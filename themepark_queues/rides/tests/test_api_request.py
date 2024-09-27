@@ -9,8 +9,7 @@ Purpose: Tests api_request.py file for requesting queue data from
 from django.test import TestCase
 from ..models import Ride
 from unittest.mock import patch, MagicMock
-from ..utils.api_request import get_queue_data, get_rides, create_rides, \
-  compile_rides_list
+from ..utils.api_request import get_rides, create_rides, compile_rides_list
 
 
 class GetRidesTest(TestCase):
