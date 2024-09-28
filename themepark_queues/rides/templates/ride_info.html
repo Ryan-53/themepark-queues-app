@@ -1,40 +1,68 @@
 {% include 'base.html' %}
 
 <body>
-  <div class="container">
+  <div class="container col-sm-4">
     </br>
-    <h2>{{ ride.name }}</h2>
-    
-    Ride category: {{ ride.category }}
-    </br>
-    
-    {% if ride.open_state == True %}
-      Wait time: {{ ride.wait_time }}
-    
-    {% else %}
-      Wait time: Closed
-        </br></br>
 
-      {% if user.is_authenticated %}
-        Ride currently closed
-        <!-- TODO: Add button to subscribe for opening notifications depending on:
-          1. Only if the ride is closed
-          2. And user is not already subscribed  -->
-        <form action="/ride-info/{{ ride.id }}" method="post">
-          {% csrf_token %}
-          <button type="submit">Subscribe </button>
-        </form>
+    <table class="table table-borderless ride-info-card table-info table-active rounded-table">
+      
+      <thead class="bg-info">
+        <tr>
+          <th>
+            <h3>{{ ride.name }}</h3>
+          </th>
+        </tr>
+      </thead>
 
-      {% else %}
-        Please <a href="/login">login</a> to subscribe for notifications of ride reopening  
+      <tbody>
+        <tr>
+          <td>
+      
+            Ride category: {{ ride.category }}
+            
+            <p class="wait-time">Wait time:
+              {% if ride.open_state == True %}
+                {% if ride.wait_time < 30 %}
+                  <wrapper class="bold-text queue-short">
+                {% elif ride.wait_time < 50 %}
+                  <wrapper class="bold-text queue-med">
+                {% else %}
+                  <wrapper class="bold-text queue-long">
+                {% endif %}
+                  {{ ride.wait_time }} mins
+                </wrapper>
+            
+              {% else %}
+                <wrapper class="bold-text">Closed</wrapper>
+            </p>
 
-      {% endif %}
+              <div class="subscription">
+                {% if subscribed == True %}
+                  You have subscribed!
+                
+                {% elif user.is_authenticated %}
+                  For email notifications of ride reopening click here
+                  <!-- TODO: Add button to subscribe for opening notifications depending on:
+                    1. Only if the ride is closed
+                    2. And user is not already subscribed  -->
+                  <form action="/ride-info/{{ ride.id }}" method="post">
+                    {% csrf_token %}
+                    <button class="ride-info-sub-button btn btn-primary" type="submit">Subscribe </button>
+                  </form>
 
-      {% if subscribed == True %}
-        </br></br>
-        You have subscribed
-      {% endif %}
-    {% endif %}
+                {% else %}
+                  Please <a href="/login">login</a> to subscribe for notifications of ride reopening  
+
+                {% endif %}
+              </div>
+            {% endif %}
+      
+          </th>
+        </tr>
+      </tbody>
+    </table>
+
+    <a href="/"><button class="btn button-back">Back to all Rides</button></a>
 
   </div>
 </body>

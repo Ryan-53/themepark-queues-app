@@ -3,12 +3,18 @@
 <body>
   <div class="container">
   </br>
-    <h3>Welcome {{ user.email }}</h3>
+    <h3>Your Account</h3>
 
     Email: {{ user.email }}
+    
+    <!--TODO: Table of subscribed rides-->
 
     </br>
-    <a class="nav-link" href="logout"><h4>Logout</h4></a>
+    <a href="logout">
+      <button class="btn btn-primary button-logout">
+        Logout
+      </button>
+    </a>
   </div>
 </body>
 
