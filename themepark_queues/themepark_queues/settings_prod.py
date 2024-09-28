@@ -32,6 +32,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
   os.getenv('PUBLIC_IP'),
+  os.getenv('PUBLIC_DOMAIN'),
+  f"www.{os.getenv('PUBLIC_DOMAIN')}",
   'localhost'
 ]
 
