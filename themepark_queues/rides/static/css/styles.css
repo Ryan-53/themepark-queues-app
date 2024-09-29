@@ -98,6 +98,10 @@ body {
   color: red;
 }
 
+.ride-table-category {
+  margin-bottom: 20px;
+}
+
 /* Ride info */
 
 .ride-info-card td {
@@ -113,11 +117,12 @@ body {
 }
 
 .subscription {
-  padding-top: 20px;
+  padding-top: 4px;
 }
 
 .button-back {
   border-color: lightgray;
+  background-color: #c4e0e0;
   border-width: 1px;
   margin-top: 10px;
 }
@@ -126,6 +131,7 @@ body {
 
 .button-signup {
   border-color: lightgray;
+  background-color: #c4e0e0;
   border-width: 1px;
   margin-top: 10px;
 }
