@@ -73,12 +73,7 @@ def get_notif_db_url() -> str:
   """ Produces the location in the remote DB where all the ride
   notification data is stored from environment variable """
 
-  # Loading firebase URL from settings (to change remote DB change env
-  # variable)
-  #firebase_url: str = settings.FIREBASE_DB_URL
-  #notif_url: str = f"{firebase_url}notifications"
-
-  notif_url: str = f"notifications"
+  notif_url: str = "notifications"
 
   return notif_url
 
