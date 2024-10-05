@@ -101,11 +101,8 @@ def ride_info(request: HttpRequest, ride_id: int) -> HttpResponse:
   store email notification data."""
 
   # DYNAMIC_TODO: Change to use dynamic park_id
+  # Gets current ride's live queue data
   save_queue_data(park_id=1)
-
-  ### IMPROVE_TODO: Get live data to the ride_info page instead of just
-  ### taking last updated home page data. (maybe request data for
-  ### individual ride directly from queue-times.com?)
   ride: Ride = get_object_or_404(Ride, id=ride_id)
 
   ## IMPROVE_TODO: Handle when user is already subscribed
