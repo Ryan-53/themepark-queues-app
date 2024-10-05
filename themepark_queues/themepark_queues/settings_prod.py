@@ -146,3 +146,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Loading firebase URL from environment variable
 FIREBASE_DB_URL = os.getenv('FIREBASE_DB_URL')
+
+# Loads firebase authentication SDK
+FIREBASE_AUTH_KEY = os.path.join(BASE_DIR,
+  "themepark-queues-notifications-firebase-adminsdk.json")
