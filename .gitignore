@@ -30,6 +30,7 @@ themepark_queues/htmlcov
 
 # Private keys
 *.pem
+*.json
 
 # Local static generated files
 themepark_queues/static/
