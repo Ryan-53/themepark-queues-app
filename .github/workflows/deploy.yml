@@ -31,6 +31,7 @@ jobs:
             git reset --hard origin/main  # Hard reset to the latest commit on main
             source env/bin/activate  # Activate the virtual environment
             pip install -r requirements.txt  # Install dependencies if needed
+            python themepark_queues/manage.py makemigrations # Generate any new migrations
             python themepark_queues/manage.py migrate  # Run migrations if necessary
             python themepark_queues/manage.py collectstatic --noinput  # Collects all static files to global location
             sudo systemctl daemon-reload  # Reload systemd

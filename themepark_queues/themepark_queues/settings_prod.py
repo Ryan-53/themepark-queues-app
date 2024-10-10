@@ -91,8 +91,12 @@ WSGI_APPLICATION = "themepark_queues.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": BASE_DIR / "themepark_queues_psgr",
+        "USER": os.getenv('REMOTE_ADMIN_USER'),
+        "PASSWORD": os.getenv('REMOTE_ADMIN_PASSWORD'),
+        "HOST": "localhost",
+        "PORT": ""
     }
 }
 
