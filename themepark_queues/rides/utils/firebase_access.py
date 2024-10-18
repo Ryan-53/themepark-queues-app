@@ -21,11 +21,13 @@ def add_notif(park_id: int,
   """Adds the notification request to the remote DB for the specific
   ride_id for the given user_email"""
 
-  ## Authenticating service account used to initialise connection with remote DB
-  cred = credentials.Certificate(settings.FIREBASE_AUTH_KEY)
-  firebase_admin.initialize_app(cred, {
-    'databaseURL': settings.FIREBASE_DB_URL
-  })
+  # Authenticating service account used to initialise connection with
+  # remote DB, but only if it has not already been done this runtime
+  if not firebase_admin._apps:
+    cred = credentials.Certificate(settings.FIREBASE_AUTH_KEY)
+    firebase_admin.initialize_app(cred, {
+      'databaseURL': settings.FIREBASE_DB_URL
+    })
 
   ride_url: str = get_ride_url(park_id=park_id, ride_id=ride_id)
   update_url: str = f"{ride_url}"
@@ -45,7 +47,7 @@ def add_notif(park_id: int,
   # Adds new user_email to list if already exists, otherwise create a new
   # ride notification using ride_id as the key.
   ref = db.reference(update_url)
-  fdb_response: Response = ref.update(ride_notif)
+  fdb_response: Response = ref.update(ride_notif) # type: ignore
 
   logging.debug(f"Notification created")
 
@@ -56,7 +58,7 @@ def add_to_email_list(ride_url: str, user_email: str) -> list[str]:
   fetch_url: str = f"{ride_url}/user_emails"
   # Gets list of current emails already signed up for notifications
   ref = db.reference(fetch_url)
-  cur_emails: list[str] = ref.get()
+  cur_emails: list[str] = ref.get() # type: ignore
 
   # Checks if notification for ride_id exists already and if so
   # retrieves the emails subscribed to it.
